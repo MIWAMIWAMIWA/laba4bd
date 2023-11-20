@@ -12,7 +12,7 @@ class AttemptAnswer(db.Model, IDto):
     user_answer = db.Column(db.String(200), nullable=False)
     is_correct = db.Column(db.Boolean, nullable=False)
     Attempt_idAttempt = db.Column(db.Integer, db.ForeignKey('Attempt.idAttempt'), primary_key=True)
-    test_question_id_question = db.Column(db.Integer, db.ForeignKey('test_question.id_question'), nullable=False)
+    test_question_id_question = db.Column(db.Integer, db.ForeignKey('test_question.id_question'))
 
 
     attempt = db.relationship("Attempt", backref="attempt_answers")

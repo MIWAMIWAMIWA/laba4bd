@@ -8,8 +8,8 @@ from laba4.app.my_project.auth.domain.i_dto import IDto
 class Affiliation(db.Model, IDto):
     __tablename__ = "affiliation"
     idaff = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    courses_id1 = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
-    authors_id1 = db.Column(db.Integer, db.ForeignKey('authors.id'), nullable=False)
+    courses_id1 = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    authors_id1 = db.Column(db.Integer, db.ForeignKey('authors.id'))
 
     courses = db.relationship("Course", backref="affiliations")
     authors = db.relationship("Author", backref="affiliations")

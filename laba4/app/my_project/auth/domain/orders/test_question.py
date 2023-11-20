@@ -12,7 +12,7 @@ class TestQuestion(db.Model, IDto):
     question_text = db.Column(db.String(200), nullable=False)
     answers = db.Column(db.String(200), nullable=False)
     correct_answer = db.Column(db.String(200), nullable=False)
-    test_idtest = db.Column(db.Integer, db.ForeignKey('test.idtest'), nullable=False)
+    test_idtest = db.Column(db.Integer, db.ForeignKey('test.idtest'))
 
     # Define relationship
     test = db.relationship("Test", backref="test_questions")

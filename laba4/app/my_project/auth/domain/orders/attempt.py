@@ -12,8 +12,8 @@ class Attempt(db.Model , IDto):
     idAttempt = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date_of_attempt = db.Column(db.Date, nullable=True)
     score = db.Column(db.Integer, nullable=True)
-    test_idtest = db.Column(db.Integer, db.ForeignKey('test.idtest'), nullable=False)
-    students_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    test_idtest = db.Column(db.Integer, db.ForeignKey('test.idtest'))
+    students_id = db.Column(db.Integer, db.ForeignKey('students.id'))
 
 
     test = db.relationship("Test", backref="attempts")

@@ -12,7 +12,7 @@ class Module(db.Model):
     modules_name = db.Column(db.String(45), nullable=False)
     modules_position = db.Column(db.Integer, nullable=False)
     time_to_deadline = db.Column(db.Integer, nullable=True, default=None)
-    courses_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
+    courses_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
 
 
     courses = db.relationship("Course", backref="modules")
