@@ -9,9 +9,9 @@ class AttemptAnswer(db.Model, IDto):
 
     __tablename__ = "Attempt_answer"
     idAttemptAns = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_answer = db.Column(db.String(200), nullable=False)
-    is_correct = db.Column(db.Boolean, nullable=False)
-    Attempt_idAttempt = db.Column(db.Integer, db.ForeignKey('Attempt.idAttempt'), primary_key=True)
+    user_answer = db.Column(db.String(200), nullable=True)
+    is_correct = db.Column(db.Boolean, nullable=True)
+    Attempt_idAttempt = db.Column(db.Integer, db.ForeignKey('Attempt.idAttempt'))
     test_question_id_question = db.Column(db.Integer, db.ForeignKey('test_question.id_question'))
 
 

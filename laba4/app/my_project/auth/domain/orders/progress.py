@@ -9,7 +9,7 @@ class Progress(db.Model, IDto):
 
     __tablename__ = "progress"
     idPr = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    date_of_start = db.Column(db.Date, nullable=False)
+    date_of_start = db.Column(db.Date, nullable=True)
     current_deadline = db.Column(db.Date, nullable=True)
     students_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=True)
     modules_modules_id = db.Column(db.Integer, db.ForeignKey('modules.modules_id'), nullable=True)
