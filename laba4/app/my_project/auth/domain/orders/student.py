@@ -6,9 +6,7 @@ from laba4.app.my_project.auth.domain.i_dto import IDto
 
 
 class Student(db.Model,IDto):
-    """
-    Model declaration for the 'students' table.
-    """
+
     __tablename__ = "students"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -21,10 +19,7 @@ class Student(db.Model,IDto):
                f"students_surname='{self.students_surname}', students_course={self.students_course})"
 
     def put_into_dto(self) -> Dict[str, Any]:
-        """
-        Puts domain object into DTO
-        :return: DTO object as dictionary
-        """
+
         return {
             "id": self.id,
             "students_name": self.students_name,
@@ -34,11 +29,7 @@ class Student(db.Model,IDto):
 
     @staticmethod
     def create_from_dto(dto_dict: Dict[str, Any]) -> Student:
-        """
-        Creates domain object from DTO
-        :param dto_dict: DTO object
-        :return: Domain object
-        """
+
         obj = Student(
             students_name=dto_dict.get("students_name"),
             students_surname=dto_dict.get("students_surname"),

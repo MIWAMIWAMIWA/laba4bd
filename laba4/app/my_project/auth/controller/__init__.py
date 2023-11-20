@@ -4,7 +4,6 @@ from .orders.attempt_controller import AttemptController
 from .orders.author_controller import AuthorController
 
 from .orders.course_controller import CourseController
-from .orders.lecture_controller import LectureController
 from .orders.module_controller import ModuleController
 from .orders.progress_controller import ProgressController
 from .orders.student_controller import StudentController
@@ -16,7 +15,6 @@ attempt_answer_controller = AttemptAnswerController()
 attempt_controller = AttemptController()
 author_controller = AuthorController()
 course_controller = CourseController()
-lecture_controller = LectureController()
 module_controller = ModuleController()
 progress_controller = ProgressController()
 student_controller = StudentController()

@@ -6,9 +6,7 @@ from laba4.app.my_project.auth.domain.i_dto import IDto
 
 
 class Attempt(db.Model , IDto):
-    """
-    Model declaration for the 'Attempt' table.
-    """
+
     __tablename__ = "Attempt"
 
     idAttempt = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -17,7 +15,7 @@ class Attempt(db.Model , IDto):
     test_idtest = db.Column(db.Integer, db.ForeignKey('test.idtest'), nullable=False)
     students_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
 
-    # Define relationships
+
     test = db.relationship("Test", backref="attempts")
     students = db.relationship("Student", backref="attempts")
 
@@ -26,25 +24,20 @@ class Attempt(db.Model , IDto):
                f"score={self.score}, test_idtest={self.test_idtest}, students_id={self.students_id})"
 
     def put_into_dto(self) -> Dict[str, Any]:
-        """
-        Puts domain object into DTO
-        :return: DTO object as dictionary
-        """
+
+        from laba4.app.my_project.auth.controller import test_controller
+        from laba4.app.my_project.auth.controller import student_controller
         return {
             "idAttempt": self.idAttempt,
             "date_of_attempt": self.date_of_attempt,
             "score": self.score,
-            "test_idtest": self.test_idtest,
-            "students_id": self.students_id,
+            "test_idtest": test_controller.find_by_id(self.test_idtest),
+            "students_id": student_controller.find_by_id(self.students_id),
         }
 
     @staticmethod
     def create_from_dto(dto_dict: Dict[str, Any]) -> Attempt:
-        """
-        Creates domain object from DTO
-        :param dto_dict: DTO object
-        :return: Domain object
-        """
+
         obj = Attempt(
             date_of_attempt=dto_dict.get("date_of_attempt"),
             score=dto_dict.get("score"),

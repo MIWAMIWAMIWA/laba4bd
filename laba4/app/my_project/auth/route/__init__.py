@@ -11,7 +11,6 @@ def register_routes(app: Flask) -> None:
     from .orders.attempt_answer_route import attempt_answer_bp
     from .orders.author_route import author_bp
     from laba4.app.my_project.auth.route.orders.course_route import course_bp
-    from laba4.app.my_project.auth.route.orders.lecture_route import lecture_bp
     from laba4.app.my_project.auth.route.orders.module_route import module_bp
     from laba4.app.my_project.auth.route.orders.progress_route import progress_bp
     from laba4.app.my_project.auth.route.orders.test_route import test_bp
@@ -22,7 +21,6 @@ def register_routes(app: Flask) -> None:
     app.register_blueprint(attempt_answer_bp)
     app.register_blueprint(author_bp)
     app.register_blueprint(course_bp)
-    app.register_blueprint(lecture_bp)
     app.register_blueprint(module_bp)
     app.register_blueprint(progress_bp)
     app.register_blueprint(student_bp)

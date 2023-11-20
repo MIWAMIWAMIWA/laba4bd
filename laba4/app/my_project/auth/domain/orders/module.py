@@ -5,9 +5,7 @@ from laba4.app.my_project import db
 
 
 class Module(db.Model):
-    """
-    Model declaration for the 'modules' table.
-    """
+
     __tablename__ = "modules"
 
     modules_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -16,7 +14,7 @@ class Module(db.Model):
     time_to_deadline = db.Column(db.Integer, nullable=True, default=None)
     courses_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
 
-    # Define relationship
+
     courses = db.relationship("Course", backref="modules")
 
     def __repr__(self) -> str:
@@ -25,25 +23,19 @@ class Module(db.Model):
                f"courses_id={self.courses_id})"
 
     def put_into_dto(self) -> Dict[str, Any]:
-        """
-        Puts domain object into DTO
-        :return: DTO object as dictionary
-        """
+
+        from laba4.app.my_project.auth.controller import course_controller
         return {
             "modules_id": self.modules_id,
             "modules_name": self.modules_name,
             "modules_position": self.modules_position,
             "time_to_deadline": self.time_to_deadline,
-            "courses_id": self.courses_id,
+            "courses_id": course_controller.find_by_id(self.courses_id),
         }
 
     @staticmethod
     def create_from_dto(dto_dict: Dict[str, Any]) -> Module:
-        """
-        Creates domain object from DTO
-        :param dto_dict: DTO object
-        :return: Domain object
-        """
+
         obj = Module(
             modules_name=dto_dict.get("modules_name"),
             modules_position=dto_dict.get("modules_position"),

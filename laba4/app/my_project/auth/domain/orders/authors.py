@@ -6,9 +6,7 @@ from laba4.app.my_project.auth.domain.i_dto import IDto
 
 
 class Author(db.Model, IDto):
-    """
-    Model declaration for the 'authors' table.
-    """
+
     __tablename__ = "authors"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -20,10 +18,7 @@ class Author(db.Model, IDto):
         return f"Author({self.id}, '{self.authors_name}', '{self.authors_title}', '{self.authors_email}')"
 
     def put_into_dto(self) -> Dict[str, Any]:
-        """
-        Puts domain object into DTO
-        :return: DTO object as dictionary
-        """
+
         return {
             "id": self.id,
             "authors_name": self.authors_name,
@@ -33,11 +28,7 @@ class Author(db.Model, IDto):
 
     @staticmethod
     def create_from_dto(dto_dict: Dict[str, Any]) -> Author:
-        """
-        Creates domain object from DTO
-        :param dto_dict: DTO object
-        :return: Domain object
-        """
+
         obj = Author(
             authors_name=dto_dict.get("authors_name"),
             authors_title=dto_dict.get("authors_title"),
