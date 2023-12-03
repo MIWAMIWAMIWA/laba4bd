@@ -1,0 +1,62 @@
+параметризована вставка
+
+DROP PROCEDURE IF EXISTS InsertIntoAuthors;
+DELIMITER //
+CREATE PROCEDURE InsertIntoAuthors(IN a_name VARCHAR(45), IN a_title VARCHAR(45), IN a_email VARCHAR(45))
+BEGIN
+    INSERT INTO authors (authors_name,authors_title, authors_email) VALUES ( a_name, a_title, a_email);
+END //
+DELIMITER ;
+
+згенерувати кілька стрічок
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS InsertIntoMultipleAuthors;
+CREATE PROCEDURE InsertIntoMultipleAuthors(IN a_name VARCHAR(45))
+BEGIN
+    DECLARE i INT DEFAULT 1;
+	DECLARE new_value VARCHAR(50);
+    WHILE i <= 10 DO
+        SET new_value = CONCAT(a_name, i);
+        INSERT INTO authors (authors_name, authors_title,authors_email) VALUES (new_value,'generated','generated');
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+
+процедура яка рахує MAX MIN SUM AVG для таблиці сourse по стовбцю course_diffc
+
+DELIMITER //
+DROP PROCedure if exists AA4;
+CREATE PROCEDURE AA4(
+out value1 int,
+OUT value2 int,
+out value3 int,
+out value4 int )
+BEGIN
+SELECT MAX(courses_diffc), MIN(courses_diffc), SUm(courses_diffc),avg(courses_diffc) INTO value1,value2, value3,value4
+FROM courses;
+END //
+DELIMITER ;
+
+і процедура яка викликає цю процедуру
+
+DELIMITER //
+DROP procedure if exists StoredMiwa;
+CREATE PROCEDURE StoredMiwa(
+IN value1 int, out miwa int)
+BEGIN
+CALL AA4(@max,@min,@sum,@avg);
+CASE value1
+        WHEN 1 THEN
+            set miwa = @max;
+        WHEN 2 THEN
+            SET miwa = @min;
+        WHEN 3 THEN
+            set miwa = @sum;
+        ELSE
+            set miwa = @avg;
+    END CASE;
+END //
+DELIMITER ;
+

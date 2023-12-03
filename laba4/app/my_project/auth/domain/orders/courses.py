@@ -6,7 +6,6 @@ from laba4.app.my_project.auth.domain.i_dto import IDto
 
 
 class Course(db.Model, IDto):
-
     __tablename__ = "courses"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -18,17 +17,18 @@ class Course(db.Model, IDto):
         return f"Course({self.id}, '{self.courses_name}', '{self.courses_description}', {self.courses_diffc})"
 
     def put_into_dto(self) -> Dict[str, Any]:
-
+        from laba4.app.my_project.auth.dao import module_dao
         return {
             "id": self.id,
             "courses_name": self.courses_name,
             "courses_description": self.courses_description,
             "courses_diffc": self.courses_diffc,
+            "modules in this course": list(
+                map(lambda x: x.put_into_dto_relation(), module_dao.find_objects_with_value('courses_id', self.id)))
         }
 
     @staticmethod
     def create_from_dto(dto_dict: Dict[str, Any]) -> Course:
-
         obj = Course(
             courses_name=dto_dict.get("courses_name"),
             courses_description=dto_dict.get("courses_description"),

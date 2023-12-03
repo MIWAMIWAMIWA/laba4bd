@@ -45,3 +45,8 @@ def patch_course(item_id: int) -> Response:
 def delete_course(item_id: int) -> Response:
     course_controller.delete(item_id)
     return make_response("course deleted", HTTPStatus.OK)
+
+
+@course_bp.get('use-function/<string:function>')
+def get_function(function):
+    return make_response(course_controller.get_statistics(function), HTTPStatus.OK)

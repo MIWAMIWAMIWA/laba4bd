@@ -31,7 +31,7 @@ class Progress(db.Model, IDto):
             "date_of_start": self.date_of_start,
             "current_deadline": self.current_deadline,
             "students_id": student_controller.find_by_id(self.students_id),
-            "modules_modules_id": module_controller.find_by_id(self.modules_modules_id),
+            "modules_modules_id": module_controller.find_by_id_relation(self.modules_modules_id),
         }
 
     @staticmethod

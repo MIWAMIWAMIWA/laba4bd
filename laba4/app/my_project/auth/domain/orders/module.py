@@ -22,15 +22,25 @@ class Module(db.Model):
                f"modules_position={self.modules_position}, time_to_deadline={self.time_to_deadline}, " \
                f"courses_id={self.courses_id})"
 
-    def put_into_dto(self) -> Dict[str, Any]:
-
-        from laba4.app.my_project.auth.controller import course_controller
+    def put_into_dto_relation(self) -> Dict[str, Any]:
         return {
             "modules_id": self.modules_id,
             "modules_name": self.modules_name,
             "modules_position": self.modules_position,
             "time_to_deadline": self.time_to_deadline,
-            "courses_id": course_controller.find_by_id(self.courses_id),
+        }
+
+    def put_into_dto(self) -> Dict[str, Any]:
+
+        from laba4.app.my_project.auth.controller import course_controller
+        from laba4.app.my_project.auth.dao import test_dao
+        return {
+            "modules_id": self.modules_id,
+            "modules_name": self.modules_name,
+            "modules_position": self.modules_position,
+            "time_to_deadline": self.time_to_deadline,
+            "courses_id": self.courses_id,
+            "tests in this module": list(map(lambda x: x.put_into_dto_relation(), test_dao.find_objects_with_value('modules_modules_id', self.modules_id)))
         }
 
     @staticmethod

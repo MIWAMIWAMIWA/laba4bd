@@ -22,13 +22,20 @@ class TestQuestion(db.Model, IDto):
                f"answers='{self.answers}', correct_answer='{self.correct_answer}', test_idtest={self.test_idtest})"
 
     def put_into_dto(self) -> Dict[str, Any]:
-        from laba4.app.my_project.auth.controller import test_controller
+
         return {
             "id_question": self.id_question,
             "question_text": self.question_text,
             "answers": self.answers,
             "correct_answer": self.correct_answer,
-            "test_idtest": test_controller.find_by_id(self.test_idtest),
+        }
+
+    def put_into_dto_relation(self) -> Dict[str, Any]:
+        return {
+            "id_question": self.id_question,
+            "question_text": self.question_text,
+            "answers": self.answers,
+            "correct_answer": self.correct_answer,
         }
 
     @staticmethod

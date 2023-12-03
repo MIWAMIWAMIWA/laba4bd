@@ -21,6 +21,14 @@ class GeneralController(ABC):
             abort(HTTPStatus.NOT_FOUND)
         return obj.put_into_dto()
 
+    def find_by_id_relation(self, key: int) -> object:
+
+        obj = self._service.find_by_id(key)
+        if obj is None:
+            abort(HTTPStatus.NOT_FOUND)
+        return obj.put_into_dto_relation()
+
+
     def create(self, obj: object) -> object:
 
         return self._service.create(obj).put_into_dto()

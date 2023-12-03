@@ -1,0 +1,83 @@
+
+
+
+тригери на заборону видалення
+
+DROP TRIGGER IF EXISTS before_delete_trigger
+DELIMITER //
+CREATE TRIGGER before_delete_trigger
+BEFORE DELETE ON courses
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'u cant delete the truth';
+END;
+//
+DELIMITER ;
+
+тригери на заборону 2 нулів
+
+DROP TRIGGER IF EXISTS check_position_trigger;
+DELIMITER //
+CREATE TRIGGER check_position_trigger
+BEFORE INSERT ON modules
+FOR EACH ROW
+BEGIN
+    IF NEW.modules_position % 100 = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'вже краще зробіть ще один курс';
+    END IF;
+END;
+//
+DROP TRIGGER IF EXISTS check_position_update_trigger;
+CREATE TRIGGER check_position_update_trigger
+BEFORE UPDATE ON modules
+FOR EACH ROW
+BEGIN
+    IF NEW.modules_position % 100 = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'вже краще зробіть ще один курс';
+    END IF;
+END;
+//
+DELIMITER ;
+
+тригери  на заборону модифікації
+
+DELIMITER //
+CREATE TRIGGER before_update_students
+BEFORE UPDATE ON students
+FOR EACH ROW
+BEGIN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'u cant modificate students';
+END;
+//
+DELIMITER ;
+
+тригери на забезпечення 1 до багатьох зв'язків
+
+DELIMITER //
+DROP TRIGGER IF EXISTS before_update_workplace;
+CREATE TRIGGER before_update_workplace
+BEFORE UPDATE ON workplace_student
+FOR EACH ROW
+BEGIN
+    IF Not exists(Select * from students WHERE id = NEW.id_student ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'НЕМАЄ ТАКОГО СТУДЕНТА';
+    END IF;
+END;
+//
+DROP TRIGGER IF EXISTS before_insert_workplace;
+CREATE TRIGGER before_insert_workplace
+BEFORE INSERT ON workplace_student
+FOR EACH ROW
+BEGIN
+    IF Not exists(Select * from students WHERE id = NEW.id_student ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'НЕМАЄ ТАКОГО СТУДЕНТА';
+    END IF;
+END;
+//
+DELIMITER ;
