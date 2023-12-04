@@ -3,6 +3,7 @@ from http import HTTPStatus
 from flask import Blueprint, jsonify, Response, request, make_response
 
 from laba4.app.my_project.auth.controller import student_controller
+from laba4.app.my_project.auth.dao import student_dao
 from laba4.app.my_project.auth.domain.orders.student import Student
 
 student_bp = Blueprint('student', __name__, url_prefix='/student')
@@ -45,3 +46,9 @@ def patch_student(item_id: int) -> Response:
 def delete_student(item_id: int) -> Response:
     student_controller.delete(item_id)
     return make_response("progress deleted", HTTPStatus.OK)
+
+
+@student_bp.get('/generate_dbs')
+def generate_tables():
+    student_controller.gen_databases()
+    return make_response("Databases created", HTTPStatus.OK)

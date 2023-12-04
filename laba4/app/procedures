@@ -60,3 +60,55 @@ CASE value1
 END //
 DELIMITER ;
 
+курсор процедура ствоерння датабаз для імен студентів з датабази студентс
+
+DELIMITER //
+CREATE PROCEDURE generate_db_cursor()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE nameofdb CHAR(25);
+    DECLARE numTables INT;
+    DECLARE counter INT DEFAULT 1;
+    DECLARE cursor_1 CURSOR FOR SELECT students_name FROM students;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+
+    OPEN cursor_1;
+
+    myLoop: LOOP
+        FETCH cursor_1 INTO nameofdb;
+        IF done THEN
+            LEAVE myLoop;
+        END IF;
+
+        SET @drop_query = CONCAT('DROP DATABASE IF EXISTS `', nameofdb , '`');
+        PREPARE drop_query FROM @drop_query;
+        EXECUTE drop_query;
+        DEALLOCATE PREPARE drop_query;
+
+        SET @create_db = CONCAT('CREATE DATABASE IF NOT EXISTS `', nameofdb, '`');
+        PREPARE create_query FROM @create_db;
+        EXECUTE create_query;
+        DEALLOCATE PREPARE create_query;
+
+
+        SET numTables = FLOOR(RAND() * 9) + 1;
+        SET counter = 1;
+
+
+        WHILE counter <= numTables DO
+            SET @table_name = CONCAT(nameofdb, '_', counter);
+            SET @query = CONCAT('CREATE TABLE IF NOT EXISTS `',nameofdb, '`.`', @table_name, '` (id INT, name VARCHAR(255));');
+            PREPARE create_table_query FROM @query;
+            EXECUTE create_table_query;
+            DEALLOCATE PREPARE create_table_query;
+            SET counter = counter + 1;
+        END WHILE;
+    END LOOP;
+
+    CLOSE cursor_1;
+END//
+DELIMITER ;
+
+

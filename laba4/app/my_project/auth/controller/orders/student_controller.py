@@ -5,3 +5,6 @@ from laba4.app.my_project.auth.controller.general_controller import GeneralContr
 class StudentController(GeneralController):
 
     _service = student_service
+
+    def gen_databases(self):
+        self._service.generate_databases()
