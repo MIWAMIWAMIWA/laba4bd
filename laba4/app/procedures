@@ -111,4 +111,29 @@ BEGIN
 END//
 DELIMITER ;
 
+процедура m : m
 
+DROP procedure if exists InsertCourseWithAffiliation;
+DELIMITER //
+
+CREATE PROCEDURE InsertCourseWithAffiliation(
+    IN course_name VARCHAR(255),
+    IN course_diffculty INT,
+    IN author_id INT
+)
+BEGIN
+
+
+    IF EXISTS (SELECT * FROM authors where id = author_id) then
+
+        INSERT INTO courses (courses_name,courses_diffc) VALUES (course_name,course_diffculty);
+
+        INSERT INTO affiliation (courses_id1, authors_id1) VALUES (LAST_INSERT_ID(), author_id);
+
+    ELSE
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'НЕМАЄ ТАКОГО AВТОРА';
+    END IF;
+END //
+
+DELIMITER ;

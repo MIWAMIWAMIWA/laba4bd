@@ -7,3 +7,6 @@ class CourseController(GeneralController):
 
     def get_statistics(self, Option):
         return course_service.get_procedure(Option)
+
+    def insert_with_affiliation(self, name, difficulty, id_author):
+        course_service.aff_insert(name, difficulty, id_author)

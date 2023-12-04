@@ -19,3 +19,11 @@ class CourseDAO(GeneralDAO):
             return jsonify({'SUM': result})
         else:
             return jsonify({'AVG': result})
+
+    def insert_with_aff(self,name,difficulty,author):
+        self._session.execute(sqlalchemy.text(f"CALL InsertCourseWithAffiliation(:p1, :p2, :p3)"),
+                              {"p1": name, "p2": difficulty, "p3": author})
+        self._session.commit()
+
+
+

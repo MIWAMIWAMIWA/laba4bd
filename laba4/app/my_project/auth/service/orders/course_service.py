@@ -14,3 +14,6 @@ class CourseService(GeneralService):
             return course_dao.get_procedure(3)
         else:
             return course_dao.get_procedure(4)
+
+    def aff_insert(self, name, diff, id_author):
+        course_dao.insert_with_aff(name, diff, id_author)
