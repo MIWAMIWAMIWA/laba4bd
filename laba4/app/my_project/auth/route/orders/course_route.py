@@ -45,3 +45,14 @@ def patch_course(item_id: int) -> Response:
 def delete_course(item_id: int) -> Response:
     course_controller.delete(item_id)
     return make_response("course deleted", HTTPStatus.OK)
+
+
+@course_bp.get('use-function/<string:function>')
+def get_function(function):
+    return make_response(course_controller.get_statistics(function), HTTPStatus.OK)
+
+
+@course_bp.get('with-aff/<string:name>/<int:diffc>/<int:author_id>')
+def insert_course_affilliation(name, diffc, author_id):
+    course_controller.insert_with_affiliation(name, diffc, author_id)
+    return make_response("Course Inserted", HTTPStatus.OK)

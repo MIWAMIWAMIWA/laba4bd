@@ -9,6 +9,7 @@ from .orders.progress_controller import ProgressController
 from .orders.student_controller import StudentController
 from .orders.test_controller import TestController
 from .orders.test_question_controller import TestQuestionController
+from .orders.workplace_controller import WorkplaceController
 
 affiliation_controller = AffiliationController()
 attempt_answer_controller = AttemptAnswerController()
@@ -20,3 +21,4 @@ progress_controller = ProgressController()
 student_controller = StudentController()
 test_question_controller = TestQuestionController()
 test_controller = TestController()
+workplace_controller = WorkplaceController()

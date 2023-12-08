@@ -27,12 +27,14 @@ class Attempt(db.Model , IDto):
 
         from laba4.app.my_project.auth.controller import test_controller
         from laba4.app.my_project.auth.controller import student_controller
+        from laba4.app.my_project.auth.dao import attempt_answer_dao
         return {
             "idAttempt": self.idAttempt,
             "date_of_attempt": self.date_of_attempt,
             "score": self.score,
-            "test_idtest": test_controller.find_by_id(self.test_idtest),
+            "test_idtest": test_controller.find_by_id_relation(self.test_idtest),
             "students_id": student_controller.find_by_id(self.students_id),
+            "attempt_answers_in this attempt": list(map(lambda x: x.put_into_dto_relation(), attempt_answer_dao.find_objects_with_value('Attempt_idAttempt', self.idAttempt)))
         }
 
     @staticmethod

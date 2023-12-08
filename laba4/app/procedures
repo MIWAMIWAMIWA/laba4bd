@@ -1,0 +1,139 @@
+параметризована вставка
+
+DROP PROCEDURE IF EXISTS InsertIntoAuthors;
+DELIMITER //
+CREATE PROCEDURE InsertIntoAuthors(IN a_name VARCHAR(45), IN a_title VARCHAR(45), IN a_email VARCHAR(45))
+BEGIN
+    INSERT INTO authors (authors_name,authors_title, authors_email) VALUES ( a_name, a_title, a_email);
+END //
+DELIMITER ;
+
+згенерувати кілька стрічок
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS InsertIntoMultipleAuthors;
+CREATE PROCEDURE InsertIntoMultipleAuthors(IN a_name VARCHAR(45))
+BEGIN
+    DECLARE i INT DEFAULT 1;
+	DECLARE new_value VARCHAR(50);
+    WHILE i <= 10 DO
+        SET new_value = CONCAT(a_name, i);
+        INSERT INTO authors (authors_name, authors_title,authors_email) VALUES (new_value,'generated','generated');
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
+
+процедура яка рахує MAX MIN SUM AVG для таблиці сourse по стовбцю course_diffc
+
+DELIMITER //
+DROP PROCedure if exists AA4;
+CREATE PROCEDURE AA4(
+out value1 int,
+OUT value2 int,
+out value3 int,
+out value4 int )
+BEGIN
+SELECT MAX(courses_diffc), MIN(courses_diffc), SUm(courses_diffc),avg(courses_diffc) INTO value1,value2, value3,value4
+FROM courses;
+END //
+DELIMITER ;
+
+і процедура яка викликає цю процедуру
+
+DELIMITER //
+DROP procedure if exists StoredMiwa;
+CREATE PROCEDURE StoredMiwa(
+IN value1 int, out miwa int)
+BEGIN
+CALL AA4(@max,@min,@sum,@avg);
+CASE value1
+        WHEN 1 THEN
+            set miwa = @max;
+        WHEN 2 THEN
+            SET miwa = @min;
+        WHEN 3 THEN
+            set miwa = @sum;
+        ELSE
+            set miwa = @avg;
+    END CASE;
+END //
+DELIMITER ;
+
+курсор процедура ствоерння датабаз для імен студентів з датабази студентс
+
+DELIMITER //
+CREATE PROCEDURE generate_db_cursor()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE nameofdb CHAR(25);
+    DECLARE numTables INT;
+    DECLARE counter INT DEFAULT 1;
+    DECLARE cursor_1 CURSOR FOR SELECT students_name FROM students;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+
+    OPEN cursor_1;
+
+    myLoop: LOOP
+        FETCH cursor_1 INTO nameofdb;
+        IF done THEN
+            LEAVE myLoop;
+        END IF;
+
+        SET @drop_query = CONCAT('DROP DATABASE IF EXISTS `', nameofdb , '`');
+        PREPARE drop_query FROM @drop_query;
+        EXECUTE drop_query;
+        DEALLOCATE PREPARE drop_query;
+
+        SET @create_db = CONCAT('CREATE DATABASE IF NOT EXISTS `', nameofdb, '`');
+        PREPARE create_query FROM @create_db;
+        EXECUTE create_query;
+        DEALLOCATE PREPARE create_query;
+
+
+        SET numTables = FLOOR(RAND() * 9) + 1;
+        SET counter = 1;
+
+
+        WHILE counter <= numTables DO
+            SET @table_name = CONCAT(nameofdb, '_', counter);
+            SET @query = CONCAT('CREATE TABLE IF NOT EXISTS `',nameofdb, '`.`', @table_name, '` (id INT, name VARCHAR(255));');
+            PREPARE create_table_query FROM @query;
+            EXECUTE create_table_query;
+            DEALLOCATE PREPARE create_table_query;
+            SET counter = counter + 1;
+        END WHILE;
+    END LOOP;
+
+    CLOSE cursor_1;
+END//
+DELIMITER ;
+
+процедура m : m
+
+DROP procedure if exists InsertCourseWithAffiliation;
+DELIMITER //
+
+CREATE PROCEDURE InsertCourseWithAffiliation(
+    IN course_name VARCHAR(255),
+    IN course_diffculty INT,
+    IN author_id INT
+)
+BEGIN
+
+
+    IF EXISTS (SELECT * FROM authors where id = author_id) then
+
+        INSERT INTO courses (courses_name,courses_diffc) VALUES (course_name,course_diffculty);
+
+        INSERT INTO affiliation (courses_id1, authors_id1) VALUES (LAST_INSERT_ID(), author_id);
+
+    ELSE
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'НЕМАЄ ТАКОГО AВТОРА';
+    END IF;
+END //
+
+DELIMITER ;

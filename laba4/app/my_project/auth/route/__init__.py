@@ -26,3 +26,5 @@ def register_routes(app: Flask) -> None:
     app.register_blueprint(student_bp)
     app.register_blueprint(test_bp)
     app.register_blueprint(test_question_bp)
+    from laba4.app.my_project.auth.route.orders.workplace_route import workplace_bp
+    app.register_blueprint(workplace_bp)

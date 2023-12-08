@@ -8,6 +8,7 @@ from .orders.progress_dao import ProgressDAO
 from .orders.student_dao import StudentDAO
 from .orders.test_dao import TestDAO
 from .orders.test_question_dao import TestQuestionDAO
+from .orders.workplace_dao import WorkplaceDAO
 
 affiliation_dao = AffiliationDAO()
 attempt_dao = AttemptDAO()
@@ -19,3 +20,4 @@ student_dao = StudentDAO()
 test_dao = TestDAO()
 test_question_dao = TestQuestionDAO()
 attempt_answer_dao = AttemptAnswerDAO()
+workplace_dao = WorkplaceDAO()

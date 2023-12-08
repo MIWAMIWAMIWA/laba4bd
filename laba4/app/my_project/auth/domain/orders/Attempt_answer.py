@@ -34,6 +34,14 @@ class AttemptAnswer(db.Model, IDto):
             "test_question_id_question": test_question_controller.find_by_id(self.test_question_id_question),
         }
 
+    def put_into_dto_relation(self) -> Dict[str, Any]:
+
+        return {
+            "id":self.idAttemptAns,
+            "user_answer": self.user_answer,
+            "is_correct": self.is_correct,
+        }
+
     @staticmethod
     def create_from_dto(dto_dict: Dict[str, Any]) -> AttemptAnswer:
 
